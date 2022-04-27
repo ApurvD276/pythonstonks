@@ -1,89 +1,43 @@
+import matplotlib.pyplot as plt
+import seaborn as sns  # statistical graphs
 import yfinance as yf
-stock_info = yf.Ticker('INTU').info
+
+form = input('Enter the Stock ID   ')
+stock_info = yf.Ticker(form).info
+print('You entered : ' + stock_info['longName'])
+
+# Stock Info
 market_cap = stock_info['marketCap']
 market_price = stock_info['regularMarketPrice']
-Gross_Profits = stock_info['grossProfits']
-DE = stock_info['debtToEquity']
-Cash_Flow = stock_info['freeCashflow']
-shares_Outstanding = stock_info['sharesOutstanding']
+annual_dividend = stock_info['trailingAnnualDividendYield']
 
 
-print('Market Capitalization ', market_cap)
-print('market price ', market_price)
-print(' Gross Profits ', Gross_Profits)
-print(' Debt/Equity Ratio ', DE)
-print('Free Cash Flow', Cash_Flow)
-print('Outstanding Shares', Cash_Flow)
+print('Market Capitalization ', 'USD', market_cap)
+print('Market price ', 'USD', market_price)
+print('Annual Dividend Yield', annual_dividend)
 
 
-'''
- region
- language
- quoteType
- quoteSourceName
- epsForward
- currency
- sharesOutstanding
- bidSize
- trailingPE
- priceToBook
- dividendDate
- regularMarketChangePercent
- market
- fiftyDayAverageChange
- forwardPE
- regularMarketPrice
- regularMarketTime
- regularMarketChange
- regularMarketOpen
- regularMarketDayHigh
- regularMarketDayLow
- regularMarketVolume
- bookValue
- ask
- regularMarketPreviousClose
- preMarketChangePercent
- regularMarketDayRange
- twoHundredDayAverageChange
- bid
- fiftyTwoWeekLowChange
- askSize
- financialCurrency
- twoHundredDayAverage
- gmtOffSetMilliseconds
- shortName
- longName
- preMarketChange
- twoHundredDayAverageChangePercent
- trailingAnnualDividendYield
- exchangeDataDelayedBy
- fiftyTwoWeekLow
- fiftyTwoWeekHigh
- averageDailyVolume3Month
- fiftyDayAverage
- exchangeTimezoneShortName
- esgPopulated
- marketState
-  marketCap
- epsTrailingTwelveMonths
- fullExchangeName
- earningsTimestampStart
- earningsTimestampEnd
- trailingAnnualDividendRate
- earningsTimestamp
- fiftyTwoWeekLowChangePercent
- fiftyTwoWeekHighChangePercent
- averageDailyVolume10Day
- exchange
- priceHint
- exchangeTimezoneName
- preMarketTime
- fiftyDayAverageChangePercent
- fiftyTwoWeekRange
- tradeable
- fiftyTwoWeekHighChange
- preMarketPrice
- sourceInterval
- messageBoardId
- price
-'''
+# Graph
+
+def market_end_prices(symbol, period="1mo"):
+    try:
+        ticker = yf.Ticker(symbol)
+        data = ticker.history(period)
+        return data["Close"]
+    except Exception as e:
+        print("Error , can't get data", e)
+
+timeperiod = input('Enter the desired time span  ')
+
+ticker = form
+period = timeperiod = input('Enter the the span  ')
+prices_data = market_end_prices(ticker, period)
+
+sns.lineplot(data=prices_data)
+sns.set_theme()
+plt.xticks(rotation=30)
+plt.title(f"Historical stock data of " + stock_info['longName'])
+plt.show()
+
+
+
